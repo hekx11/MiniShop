@@ -2,21 +2,31 @@
   <div id="container">
     <div class="gridContainer">
       <div class="card" v-for="(item, id) in items" key="id">
-        {{ item.title }}
+        <ProductCard
+          :title="item.title"
+          :description="item.description"
+          :imageSrc="item.filename"
+        />
       </div>
     </div>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { computed, ref } from "vue";
 import store from "../store/index";
-export default defineComponent({
+import ProductCard from "../components/ProductCard.vue";
+export default {
   name: "HomeView",
+  components: {
+    ProductCard,
+  },
   setup() {
-    const items = ref(store.getters.getItems);
+    store.dispatch("fetchItems");
+    const items = computed(() => store.getters.getItems);
+    console.log(items);
     return { items };
   },
-});
+};
 </script>
 <style scoped lang="scss">
 .gridContainer {

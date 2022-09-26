@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace basicapi.Controllers
 {
@@ -7,9 +6,18 @@ namespace basicapi.Controllers
     [ApiController]
     public class EndPointOneController : ControllerBase
     {
-        private static List<EndPointOne>  people = new List<EndPointOne> 
+        private static List<EndPointOne> people = new List<EndPointOne>
         {
-            new EndPointOne{Id = 1, Name="Nie wiem"}
+            new EndPointOne
+            {
+                Id = 1, 
+                Title="Sweet fresh stawberry",
+                Type= "fruit",
+                Description= "Sweet fresh stawberry on the wooden table",
+                Filename= "1.jpg",
+                Price= 29.45,
+                Rating= 4,
+            }
         };
         private readonly DataContext context;
 
@@ -43,7 +51,10 @@ namespace basicapi.Controllers
             var dbPerson = await this.context.EndPoints.FindAsync(request.Id);
             if (dbPerson == null)
                 return BadRequest("Not found");
-            dbPerson.Name = request.Name;
+            dbPerson.Title = request.Title;
+            dbPerson.Description = request.Description;
+            dbPerson.Price = request.Price;
+            dbPerson.Rating = request.Rating;
             await this.context.SaveChangesAsync();
             return Ok(await this.context.EndPoints.ToListAsync());
         }
