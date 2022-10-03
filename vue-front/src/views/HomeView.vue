@@ -1,11 +1,14 @@
 <template>
   <div id="container">
-    <div class="gridContainer">
-      <div class="card" v-for="(item, id) in items" key="id">
+    <div
+      class="gridContainer grid-cols-1 lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-2"
+    >
+      <div class="cardWrap" v-for="(item, id) in items" key="id">
         <ProductCard
           :title="item.title"
           :description="item.description"
           :imageSrc="item.filename"
+          :price="item.price"
         />
       </div>
     </div>
@@ -29,10 +32,20 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-.gridContainer {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 10px;
-  padding: 10px;
+#container {
+  .gridContainer {
+    display: grid;
+    grid-gap: 10px;
+    padding: 10px;
+
+    .cardWrap {
+      border: 1px solid rgb(102, 102, 102);
+    }
+    .cardWrap:hover {
+      border: 1px solid #fff;
+      transition: all 0.3s ease-in-out;
+      cursor: pointer;
+    }
+  }
 }
 </style>

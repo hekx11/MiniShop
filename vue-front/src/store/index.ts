@@ -1,10 +1,21 @@
 import axios from "axios";
+import currency from "currency.js";
 import { createStore } from "vuex";
-import items from "../assets/products.json";
 
 export default createStore({
   state: {
-    item: [],
+    item: [
+      {
+        id: 0,
+        Title: "",
+        Type: "",
+        Description: "",
+        Filename: "",
+        Price: 0,
+        Rating: 0,
+      },
+    ],
+    total: 0,
   },
   getters: {
     getItems(state) {
@@ -15,11 +26,17 @@ export default createStore({
     setItems(state, payload) {
       state.item = payload;
     },
+    addTotal(state, id) {
+      var price = currency(state.item[id].Price).value;
+      console.log("Cena + " + price);
+      currency(state.total).add(price).value;
+      state.total = currency(state.total).add(price).value;
+      console.log(state.total);
+    },
   },
   actions: {
     fetchItems({ commit }) {
       var data = "";
-
       var config = {
         method: "get",
         url: "https://localhost:7203/api/EndPointOne/",
@@ -29,7 +46,6 @@ export default createStore({
 
       axios(config)
         .then(function (response: any) {
-          console.log(JSON.stringify(response.data));
           commit("setItems", response.data);
         })
         .catch(function (error: any) {
